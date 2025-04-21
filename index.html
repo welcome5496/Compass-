@@ -3,83 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Magnetic Compass</title>
+  <title>Compass App</title>
   <style>
     body {
-      margin: 0;
-      background: radial-gradient(circle at center, #cce0e8, #88aabb);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       font-family: sans-serif;
+      display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f0f0f0;
     }
 
-    .compass {
+    .compass-container {
       position: relative;
       width: 300px;
       height: 300px;
+      border: 8px solid #333;
       border-radius: 50%;
-      background: url('https://i.imgur.com/YPDHX1i.png') no-repeat center/cover;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      background: white;
     }
 
-    .needle {
+    .arrow {
       position: absolute;
-      width: 8px;
-      height: 140px;
-      top: 10px;
+      width: 10px;
+      height: 120px;
+      background: red;
+      top: 30px;
       left: 50%;
       transform: translateX(-50%);
       transform-origin: bottom center;
+      border-radius: 5px;
       z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.2s ease-out;
     }
 
-    .needle::before {
-      content: '';
-      width: 8px;
-      height: 70px;
-      background: red;
-      border-radius: 4px 4px 0 0;
-    }
-
-    .needle::after {
-      content: '';
-      width: 8px;
-      height: 70px;
-      background: white;
-      border-radius: 0 0 4px 4px;
-    }
-
-    .angle-display {
+    .angle {
       margin-top: 20px;
       font-size: 24px;
-      color: #fff;
-      text-shadow: 1px 1px 2px #000;
+    }
+
+    .direction-label {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      transform: translate(-50%, -50%);
+    }
+
+    .north {
+      color: red;
+      font-size: 1.2em;
     }
   </style>
 </head>
 <body>
-  <div class="compass">
-    <div class="needle" id="needle"></div>
+  <div class="compass-container" id="compass">
+    <div class="arrow" id="arrow"></div>
+    <!-- Direction Labels -->
+    <div class="direction-label north" style="top: 10px; left: 50%;">N</div>
+    <div class="direction-label" style="top: 45px; left: 225px;">NE</div>
+    <div class="direction-label" style="top: 150px; left: 290px;">E</div>
+    <div class="direction-label" style="top: 255px; left: 225px;">SE</div>
+    <div class="direction-label" style="top: 290px; left: 150px;">S</div>
+    <div class="direction-label" style="top: 255px; left: 75px;">SW</div>
+    <div class="direction-label" style="top: 150px; left: 10px;">W</div>
+    <div class="direction-label" style="top: 45px; left: 75px;">NW</div>
   </div>
-  <div class="angle-display" id="angle">0°</div>
+  <div class="angle" id="angle">0°</div>
 
   <script>
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", (event) => {
         const alpha = event.alpha;
-        const needle = document.getElementById("needle");
+        const arrow = document.getElementById("arrow");
         const angleText = document.getElementById("angle");
 
         if (alpha !== null) {
           const rotation = 360 - alpha;
-          needle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+          arrow.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
           angleText.textContent = `${Math.round(rotation)}°`;
         }
       });
