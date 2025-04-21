@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Compass App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f0f0f0;
+    }
+
+    .compass-container {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      border: 8px solid #333;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arrow {
+      position: absolute;
+      width: 10px;
+      height: 100px;
+      background: red;
+      transform-origin: bottom center;
+      border-radius: 5px;
+    }
+
+    .angle {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="compass-container">
+    <div class="arrow" id="arrow"></div>
+  </div>
+  <div class="angle" id="angle">0°</div>
+
+  <script>
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener("deviceorientation", (event) => {
+        const alpha = event.alpha;
+        const arrow = document.getElementById("arrow");
+        const angleText = document.getElementById("angle");
+
+        if (alpha !== null) {
+          const rotation = 360 - alpha;
+          arrow.style.transform = `rotate(${rotation}deg)`;
+          angleText.textContent = `${Math.round(rotation)}°`;
+        }
+      });
+    } else {
+      alert("Device orientation not supported.");
+    }
+  </script>
+</body>
+</html>
